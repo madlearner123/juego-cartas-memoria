@@ -1,0 +1,27 @@
+body {
+    background-image: url("../../media/casino/background.png");
+}
+
+.contenedor#menu-juego {
+    background-color: #35654D;
+    border: 2px solid goldenrod;
+}
+
+.contenedor#cartas {
+    border: 8px solid #493D30;
+    background-image: url("../../media/casino/texture.avif");
+}
+
+.contenedor#vidas {
+    /*background: linear-gradient(peachpuff , firebrick);*/
+    background-color: #35654D;
+    border: 2px solid goldenrod;
+}
+
+.estadistica {
+    color: #35654D;
+}
+
+.boton {
+    color: #35654D;
+}

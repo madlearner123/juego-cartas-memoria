@@ -1,0 +1,100 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 5px;
+    max-width: 1200px;
+}
+
+.contenedor#menu-juego{
+    background-color: rgb(132, 173, 207);
+}
+.contenedor#estadisticas{
+    justify-content: start;
+    width: 70%;
+}
+.contenedor#botones{
+    justify-content: end;
+    width: 25%;
+}
+
+/* Vidas */
+
+.contenedor#vidas {
+    justify-content: space-around;
+    min-height: 80px;
+}
+.vida {
+    height: 75px;
+    width: auto;
+    margin: 5px;
+}
+
+/* Estadísticas */
+
+.estadistica {
+    padding: 8px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: white;
+    color: rgb(132, 173, 207);
+}
+
+.boton {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: white;
+    color: rgb(132, 173, 207);    
+}
+
+/* https://stackoverflow.com/questions/1776915/how-can-i-center-an-absolutely-positioned-element-in-a-div */
+.boton#startButton {
+    font-size: x-large;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+    margin-inline: auto;
+    width: 20%;
+    height: 30%;  
+    min-width: 150px;
+    max-height: 175px;  
+    z-index: 10;
+}
+
+/* Parámetros del juego */
+form.user-input-menu {
+    display: none;
+    width: 0;
+    height: 0;
+    background-color: green;
+    margin: 5px;
+}
+
+form.user-input-menu.visible {
+    width: 100%;
+    height: 50px;
+    animation: aparecer 1.5s;
+    display: flex;
+    justify-content: center;
+}
+form.user-input-menu.oculta {
+    animation: desaparecer 1s;
+    width: 0px;
+    height: 0px;
+}
+@keyframes aparecer {
+    from {height: 0px;}
+    to {height: 50px}
+}
+@keyframes desaparecer {
+    from {width: 100%; height: 50px;}
+    to {width: 0px; height: 0px}
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarea 2</title>
+    <script type="module" src="main.js" defer></script>
+    <link id="1" rel="stylesheet" href="estilos/cartas.css" />
+    <link rel="stylesheet" href="estilos/general.css" />
+    <link
+      rel="stylesheet"
+      href="estilos/especificos/casino.css"
+      id="estilo-especifico"
+    />
+  </head>
+  <body>
+    <main class="contenedor">
+      <section class="contenedor" id="menu-setup">
+        <button class="boton" id="sizeButton">Tamaño</button>
+        <button class="boton" id="lifesButton">Vidas</button>
+        <button class="boton" id="timeButton">Tiempo</button>
+        <button class="boton" id="themeButton">Tema</button>
+      </section>
+
+      <form class="user-input-menu" id="sizeForm">
+        <label for="sizeInput" id="sizeLabel">Número de parejas</label>
+        <input type="number" id="sizeInput"/>
+      </form>
+
+      <form class="user-input-menu" id="lifesForm">
+        <label for="lifesInput" id="lifesLabel">Número de vidas</label>
+        <input type="number" id="lifesInput"/>
+      </form>
+
+      <form class="user-input-menu" id="timeForm">
+        <label for="minInput" id="minLabel">Minutos</label>
+        <input type="number" id="minInput" min="0" max="59"/>
+        <label for="secInput" id="secLabel">Segundos</label>
+        <input type="number" id="secInput" min="0" max="59"/>
+      </form>
+
+      <form class="user-input-menu" id="themeForm">
+        <button id="casinoButton">Casino</button>
+        <button id="geografiaButton">Geografía</button>
+        <button id="historiaButton">Historia</button>
+      </form>
+
+      <section class="contenedor" id="menu-juego">
+        <div class="contenedor" id="estadisticas">
+          <div class="estadistica">Countdown: <span id="countdown"></span></div>
+          <div class="estadistica">Fallos: <span id="fallos">0</span></div>
+          <div class="estadistica">
+            Movimientos: <span id="movimientos">0</span>
+          </div>
+          <div class="estadistica">Aciertos: <span id="aciertos">0</span></div>
+        </div>
+        <div class="contenedor" id="botones">
+          <button id="pauseButton" class="boton">Pausar</button>
+          <button id="restartButton" class="boton">Reiniciar</button>
+        </div>
+      </section>
+
+      <section class="contenedor" id="cartas">
+        <div id="velo-cartas"></div>
+        <button id="startButton" class="boton">Empezar</button>
+      </section>
+
+      <section class="contenedor" id="vidas"></section>
+    </main>
+  </body>
+</html>
