@@ -1,4 +1,46 @@
-img.carta {
-    width: 250px;
-    height: auto;
+body {
+    background-image: url("../../media/geografia/background.webp");
+}
+
+/* Menú de configuración */
+.contenedor#menu-setup {
+    background-image: url("../../media/geografia/texture_setup.avif");
+    color: black;
+}
+
+/* Menú juego */
+.contenedor#menu-juego {
+    background-color: #0c4f6b;
+    border: 2px solid goldenrod;
+}
+
+.estadistica {
+    color: #35654D;
+}
+
+/* Cartas */
+.contenedor#cartas {
+    border: 4px solid lightblue;
+    background-image: url("../../media/geografia/texture_cartas.png");
+}
+
+/* Vidas */
+.contenedor#vidas {
+    /*background: linear-gradient(peachpuff , firebrick);*/
+    background-color: #0c4f6b;
+    border: 2px solid goldenrod;
+}
+
+/* Botones */
+.boton {
+    background-color: #0C2151;
+    color: white;
+}
+
+.boton:hover{
+    background-color: #2a54b6;;
+}
+
+.boton#geografiaButton{
+    background-color: #2a54b6;;   
 }

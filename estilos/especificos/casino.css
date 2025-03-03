@@ -2,18 +2,14 @@ body {
     background-image: url("../../media/casino/background.png");
 }
 
+/* Menú de configuración */
+.contenedor#menu-setup {
+    background-image: url("../../media/casino/texture2.jpg");
+    color: white;
+}
+
+/* Menú juego */
 .contenedor#menu-juego {
-    background-color: #35654D;
-    border: 2px solid goldenrod;
-}
-
-.contenedor#cartas {
-    border: 8px solid #493D30;
-    background-image: url("../../media/casino/texture.avif");
-}
-
-.contenedor#vidas {
-    /*background: linear-gradient(peachpuff , firebrick);*/
     background-color: #35654D;
     border: 2px solid goldenrod;
 }
@@ -22,6 +18,29 @@ body {
     color: #35654D;
 }
 
+/* Cartas */
+.contenedor#cartas {
+    border: 4px solid #493D30;
+    background-image: url("../../media/casino/texture.avif");
+}
+
+/* Vidas */
+.contenedor#vidas {
+    /*background: linear-gradient(peachpuff , firebrick);*/
+    background-color: #35654D;
+    border: 2px solid goldenrod;
+}
+
+/* Botones */
 .boton {
-    color: #35654D;
+    background-color: #254334;
+    color: white;
+}
+
+.boton:hover{
+    background-color: #579c79;;
+}
+
+.boton#casinoButton{
+    background-color: #579c79;;   
 }

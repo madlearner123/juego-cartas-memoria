@@ -66,7 +66,7 @@ class Estilo {
 
 class Juego {
   // Constantes
-  PERIODO_ESPERA = 500; // Milisegundos desde que se muestran las 2 cartas seleccionadas hasta que se vuelven a ocultar
+  static PERIODO_ESPERA = 500; // Milisegundos desde que se muestran las 2 cartas seleccionadas hasta que se vuelven a ocultar
   
   static MIN_PAREJAS = 1;
   static MAX_VIDAS = 15;
@@ -198,7 +198,7 @@ class Juego {
               Estadisticas.numMovimientos++;
               Estadisticas.actualizar();
               Cartas.numCartasVisibles -= 2;
-            }, this.PERIODO_ESPERA);
+            }, Juego.PERIODO_ESPERA);
           }
         }
         if (this.haPerdido()) console.log("Game over");
@@ -220,10 +220,107 @@ class Juego {
   redirectToResultPage() {}
 }
 
-class Parametro {
-  HTMLButtonElement;
-  HTMLFormElement;
-  HTMLInputElements = [];
+class Parametros {
+
+  static PARAMETROS_FORM = document.getElementById("parametros");
+  static BOTONES_TEMATICA = document.getElementById("tematicas");
+  static DIV_CONTENEDOR = document.getElementById("menu-setup");
+
+  static escondidos = true;
+
+  static sizeInput = document.getElementById("sizeInput");
+  static lifesInput = document.getElementById("lifesInput");
+  static minInput = document.getElementById("minInput");
+  static secInput = document.getElementById("secInput");
+
+  static casinoButton = document.getElementById("casinoButton");
+  static geografiaButton = document.getElementById("geografiaButton");
+  static historiaButton = document.getElementById("historiaButton");
+
+  static formatear(){
+    Parametros.sizeInput.setAttribute("max", Estilo.estilos[Gestor.tema].totalCartas);
+    Parametros.sizeInput.setAttribute("min", Juego.MIN_PAREJAS);
+
+    Parametros.lifesInput.setAttribute("max", Juego.MAX_VIDAS);
+    Parametros.lifesInput.setAttribute("min", Juego.MIN_VIDAS);
+
+    Parametros.minInput.setAttribute("max", Juego.MAX_MINUTOS);
+    Parametros.minInput.setAttribute("min", Juego.MIN_MINUTOS);
+
+    Parametros.secInput.setAttribute("max", Juego.MAX_SEGUNDOS);
+    Parametros.secInput.setAttribute("min", Juego.MIN_SEGUNDOS);
+  }
+
+  static actualizarValoresPorDefecto(){
+    Parametros.sizeInput.setAttribute("value", Gestor.numParejas);
+    Parametros.lifesInput.setAttribute("value", Gestor.numVidas);
+    Parametros.minInput.setAttribute("value", Gestor.tiempoMin);
+    Parametros.secInput.setAttribute("value", Gestor.tiempoSec);
+  }
+
+  static activarListeners(){
+    // Número de parejas o tamaño
+    Parametros.sizeInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Estilo.estilos[Gestor.tema].totalCartas){
+        Gestor.numParejas = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Número de vidas
+    Parametros.lifesInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_VIDAS && evento.target.value <= Juego.MAX_VIDAS){
+        Gestor.numVidas = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Tiempo: minutos y segundos
+    Parametros.minInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_MINUTOS && evento.target.value <= Juego.MAX_MINUTOS){
+        Gestor.tiempoMin = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    Parametros.secInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_SEGUNDOS && evento.target.value <= Juego.MAX_SEGUNDOS){
+        Gestor.tiempoSec = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Temática o estilo del juego
+    Parametros.casinoButton.addEventListener("click", () => {
+      Gestor.tema = "casino";
+      Parametros.formatear();
+      Gestor.reiniciarJuego();
+    });
+    Parametros.geografiaButton.addEventListener("click", () => {
+      Gestor.tema = "geografia";
+      Parametros.formatear();
+      Gestor.reiniciarJuego();
+    });
+    // Submit parámetros
+    Parametros.PARAMETROS_FORM.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      Parametros.esconder();
+      Gestor.iniciarJuego();
+    });
+  }
+
+  static esconder(){
+    if(!Parametros.escondidos){
+      Parametros.DIV_CONTENEDOR.classList.remove("revelado");
+      Parametros.DIV_CONTENEDOR.classList.add("escondido");
+      Parametros.escondidos = true;
+    }
+  }
+
+  static revelar(){
+    if(Parametros.escondidos){
+      Parametros.DIV_CONTENEDOR.classList.remove("escondido");
+      Parametros.DIV_CONTENEDOR.classList.add("revelado");
+      Parametros.escondidos = false;
+    }
+  }
+
 }
 
 
@@ -244,43 +341,16 @@ class Gestor {
 
   // Botones para controlar el estado de la partida
   static startButton = document.getElementById("startButton");
+  static configureButton = document.getElementById("configureButton");
   static pauseButton = document.getElementById("pauseButton");
   static restartButton = document.getElementById("restartButton");
 
-  // Botones, forms e inputs para configurar los parámetros del juego
-  static sizeButton = document.getElementById("sizeButton");
-  static lifesButton = document.getElementById("lifesButton");
-  static timeButton = document.getElementById("timeButton");
-  static themeButton = document.getElementById("themeButton");
+  static activarListeners() {
 
-  static forms = document.forms;
-  static sizeForm = document.forms.namedItem("sizeForm");
-  static lifesForm = document.getElementById("lifesForm");
-  static timeForm = document.getElementById("timeForm");
-  static themeForm = document.getElementById("themeForm");
-
-  static sizeInput = document.getElementById("sizeInput");
-  static lifesInput = document.getElementById("lifesInput");
-  static minInput = document.getElementById("minInput");
-  static secInput = document.getElementById("secInput");
-
-  static casinoButton = document.getElementById("casinoButton");
-  static geografiaButton = document.getElementById("geografiaButton");
-
-  static activarBotones() {
-    // Forms
-    sizeInput.setAttribute("max", Estilo.estilos[Gestor.tema].totalCartas);
-    sizeInput.setAttribute("min", Juego.MIN_PAREJAS);
-   
-    lifesInput.setAttribute("max", Juego.MAX_VIDAS);
-    lifesInput.setAttribute("min", Juego.MIN_VIDAS);
-
-    minInput.setAttribute("max", Juego.MAX_MINUTOS);
-    minInput.setAttribute("min", Juego.MIN_MINUTOS);
-    secInput.setAttribute("max", Juego.MAX_SEGUNDOS);
-    secInput.setAttribute("min", Juego.MIN_SEGUNDOS);
-
-    // Botones de control de flujo
+    Gestor.configureButton.addEventListener("click", () => {
+      Parametros.revelar();
+      Gestor.pausarJuego();
+    });
     Gestor.startButton.addEventListener("click", () => {
       Gestor.iniciarJuego();
     });
@@ -292,85 +362,16 @@ class Gestor {
       // Esta parte del código no se puede ejecutar antes que el código dentro del otro Timeout
       setTimeout(() => {
         Gestor.reiniciarJuego();
-      }, Gestor.juego.PERIODO_ESPERA);
+      }, Juego.PERIODO_ESPERA);
     });
 
-    // Botones de configuración
-    Gestor.sizeButton.addEventListener("click", () => {
-      Gestor.pausarJuego();
-      Gestor.esconderForms();
-      Gestor.mostrar(Gestor.sizeForm);
-    });
-    Gestor.lifesButton.addEventListener("click", () => {
-      Gestor.pausarJuego();
-      Gestor.esconderForms();
-      Gestor.mostrar(Gestor.lifesForm);
-    });
-    Gestor.timeButton.addEventListener("click", () => {
-      Gestor.pausarJuego();
-      Gestor.esconderForms();
-      Gestor.mostrar(Gestor.timeForm);
-    });
-    Gestor.themeButton.addEventListener("click", () => {
-      Gestor.pausarJuego();
-      Gestor.esconderForms();
-      Gestor.mostrar(Gestor.themeForm);
-    });
-
-    // Inputs de configuración
-
-    // Parámetro número de parejas
-    Gestor.sizeInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Estilo.estilos[Gestor.tema].totalCartas){
-        Gestor.numParejas = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Parámetro número de vidas
-    Gestor.lifesInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_VIDAS && evento.target.value <= Juego.MAX_VIDAS){
-        Gestor.numVidas = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Parámetros tiempo
-    Gestor.minInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_MINUTOS && evento.target.value <= Juego.MAX_MINUTOS){
-        Gestor.tiempoMin = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    Gestor.secInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_SEGUNDOS && evento.target.value <= Juego.MAX_SEGUNDOS){
-        Gestor.tiempoSec = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Parámetros tema de juego
-    Gestor.casinoButton.addEventListener("click", () => {
-      Gestor.tema = "casino";
-      Gestor.reiniciarJuego();
-    });
-    Gestor.geografiaButton.addEventListener("click", () => {
-      Gestor.tema = "geografia";
-      Gestor.reiniciarJuego();
-    });
-
-    // Forms de configuración
-    for(let form of Gestor.forms){
-      form.addEventListener("submit", (evento) => {
-        evento.preventDefault();
-        Gestor.esconder(form);
-        Gestor.iniciarJuego();
-      });
-    }
   }
 
   static iniciarJuego() {
     if (Gestor.juego.empezar()) {
       Cartas.desvelar();
       Gestor.esconder(Gestor.startButton);
-      Gestor.esconderForms();
+      Parametros.esconder();
     }
   }
 
@@ -398,18 +399,13 @@ class Gestor {
 
   static esconder(ElementoHTML){
     ElementoHTML.setAttribute("hidden", "hidden");
-    ElementoHTML.classList.add("oculto");
-    ElementoHTML.classList.remove("visible");
   }
   static mostrar(ElementoHTML){
     ElementoHTML.removeAttribute("hidden");
-    ElementoHTML.classList.add("visible");
-    ElementoHTML.classList.remove("oculto");
-  }
-
-  static esconderForms(){
-    for(let form of Gestor.forms) Gestor.esconder(form);
   }
 }
 
-Gestor.activarBotones();
+Parametros.formatear();
+Parametros.actualizarValoresPorDefecto();
+Parametros.activarListeners();
+Gestor.activarListeners();

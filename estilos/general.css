@@ -12,16 +12,54 @@ body {
     max-width: 1200px;
 }
 
+/* Menú de configuración */
+.contenedor#menu-setup{
+    background-color: rgb(132, 173, 207);
+    justify-content: center;
+}
+.contenedor#parametros{
+    justify-content: start;
+    align-items: center;
+    width: 70%;
+}
+.contenedor#tematicas{
+    justify-content: end;
+    align-items: center;
+    width: 25%;
+}
+
+.parametro{
+    margin: 5px;
+}
+.parametro label{
+    font-size: x-large;
+}
+.parametro input{
+    font-size: medium;
+    width: 40px;
+}
+
+/* Menú de flujo del juego */
 .contenedor#menu-juego{
     background-color: rgb(132, 173, 207);
 }
 .contenedor#estadisticas{
     justify-content: start;
+    align-items: center;
     width: 70%;
 }
 .contenedor#botones{
     justify-content: end;
+    align-items: center;
     width: 25%;
+}
+
+.estadistica {
+    padding: 8px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: white;
+    color: rgb(132, 173, 207);
 }
 
 /* Vidas */
@@ -36,17 +74,10 @@ body {
     margin: 5px;
 }
 
-/* Estadísticas */
-
-.estadistica {
-    padding: 8px;
-    margin: 10px;
-    border-radius: 10px;
-    background-color: white;
-    color: rgb(132, 173, 207);
-}
+/* Botones */
 
 .boton {
+    font-size: medium;
     padding: 8px;
     margin: 5px;
     border-radius: 10px;
@@ -70,26 +101,15 @@ body {
 }
 
 /* Parámetros del juego */
-form.user-input-menu {
-    display: none;
+.contenedor.escondido#menu-setup {
     width: 0;
     height: 0;
-    background-color: green;
-    margin: 5px;
+    display: none;
+}
+.contenedor.revelado#menu-setup {
+    animation: aparecer 1.5;
 }
 
-form.user-input-menu.visible {
-    width: 100%;
-    height: 50px;
-    animation: aparecer 1.5s;
-    display: flex;
-    justify-content: center;
-}
-form.user-input-menu.oculta {
-    animation: desaparecer 1s;
-    width: 0px;
-    height: 0px;
-}
 @keyframes aparecer {
     from {height: 0px;}
     to {height: 50px}
