@@ -24,6 +24,11 @@ body {
     background-image: url("../../media/casino/texture.avif");
 }
 
+img.carta {
+    width: auto;
+    height: 200px;
+}
+
 /* Vidas */
 .contenedor#vidas {
     /*background: linear-gradient(peachpuff , firebrick);*/
@@ -42,5 +47,16 @@ body {
 }
 
 .boton#casinoButton{
-    background-color: #579c79;;   
+    background-color: #579c79;   
+}
+
+/* Resultados */
+.contenedor#resultados {
+    background-color: #254334;
+    border: 2px solid goldenrod;
+}
+
+.resultado {
+    background-color: #12241b;
+    color: white;
 }

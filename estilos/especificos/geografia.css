@@ -1,5 +1,5 @@
 body {
-    background-image: url("../../media/geografia/background.webp");
+    background-image: url("../../media/geografia/background.jpg");
 }
 
 /* Menú de configuración */
@@ -24,6 +24,11 @@ body {
     background-image: url("../../media/geografia/texture_cartas.png");
 }
 
+img.carta {
+    width: 250px;
+    height: auto;
+}
+
 /* Vidas */
 .contenedor#vidas {
     /*background: linear-gradient(peachpuff , firebrick);*/
@@ -43,4 +48,15 @@ body {
 
 .boton#geografiaButton{
     background-color: #2a54b6;;   
+}
+
+/* Resultados */
+.contenedor#resultados {
+    background-color: #0C2151;
+    border: 2px solid goldenrod;
+}
+
+.resultado {
+    background-color: #0b162e;
+    color: white;
 }

@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados</title>
+    <script type="module"defer>
+        import {Resultados} from "./modulos/Resultados.js";
+        Resultados.cargarEnElHTML();
+    </script>
+    <link rel="icon" type="image/x-icon" href="./media/icono.png"/>
+    <link rel="stylesheet" href="estilos/general.css" />
+    <link rel="stylesheet" id="estilo-especifico"/>
 </head>
 <body>
-    
+    <main class="contenedor">
+
+        <section class="contenedor" id="resultados">
+            <div class="contenedor resultado" id="mensaje">
+                <img class="resultado"/>
+                <p class="resultado"></p>
+            </div>
+            <div class="resultado">Fallos: <span id="fallos">0</span></div>
+            <div class="resultado">
+                Movimientos: <span id="movimientos">0</span>
+            </div>
+            <div class="resultado">Aciertos: <span id="aciertos">0</span></div>
+            <div class="resultado">Tiempo transcurrido: <span id="tiempo">0</span> segundos</div>
+        
+            <button class="boton" id="playAgainButton">Volver a jugar</button>
+        </section>
+
+    </main>
 </body>
 </html>

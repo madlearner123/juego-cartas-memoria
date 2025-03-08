@@ -1,0 +1,62 @@
+body {
+    background-image: url("../../media/historia/background3.jpg");
+}
+
+/* Menú de configuración */
+.contenedor#menu-setup {
+    background-image: url("../../media/historia/texture_setup.jpg");
+    color: black;
+}
+
+/* Menú juego */
+.contenedor#menu-juego {
+    background-color: #b22234;
+    border: 2px solid goldenrod;
+}
+
+.estadistica {
+    color: #b22234;
+}
+
+/* Cartas */
+.contenedor#cartas {
+    border: 4px solid white;
+    background-image: url("../../media/historia/texture_cartas.jpg");
+}
+
+img.carta {
+    width: 190px;
+    height: auto;
+}
+
+/* Vidas */
+.contenedor#vidas {
+    /*background: linear-gradient(peachpuff , firebrick);*/
+    background-color: #b22234;
+    border: 2px solid goldenrod;
+}
+
+/* Botones */
+.boton {
+    background-color: #770915;
+    color: white;
+}
+
+.boton:hover{
+    background-color: #c42d3e;;
+}
+
+.boton#historiaButton{
+    background-color: #c42d3e;;   
+}
+
+/* Resultados */
+.contenedor#resultados {
+    background-color: #770915;
+    border: 2px solid goldenrod;
+}
+
+.resultado {
+    background-color: #4b040c;
+    color: white;
+}

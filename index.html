@@ -6,7 +6,6 @@
     <title>Tarea 2</title>
     <script type="module" src="main.js" defer></script>
     <link rel="icon" type="image/x-icon" href="./media/icono.png"/>
-    <link id="1" rel="stylesheet" href="estilos/cartas.css" />
     <link rel="stylesheet" href="estilos/general.css" />
     <link
       rel="stylesheet"
@@ -17,7 +16,8 @@
   <body>
     <main class="contenedor">
       
-      <section class="contenedor escondido" id="menu-setup">
+      <!-- Menú de configuración -->
+      <section class="contenedor" id="menu-setup">
         <form class="contenedor" id="parametros">
       
           <div class="parametro">
@@ -48,6 +48,7 @@
 
       </section>
 
+      <!-- Menú del juego -->
       <section class="contenedor" id="menu-juego">
         <div class="contenedor" id="estadisticas">
           <div class="estadistica">Countdown: <span id="countdown"></span></div>
@@ -58,17 +59,21 @@
           <div class="estadistica">Aciertos: <span id="aciertos">0</span></div>
         </div>
         <div class="contenedor" id="botones">
+          <button id="augmentSizeButton" class="icono boton"><img src="media/iconos/plus-symbol-button.png"/></button>
+          <button id="reduceSizeButton" class="icono boton"><img src="media/iconos/minus-symbol-button.png"/></button>
           <button id="configureButton" class="boton">Configurar</button>
           <button id="pauseButton" class="boton">Pausar</button>
           <button id="restartButton" class="boton">Reiniciar</button>
         </div>
       </section>
 
+      <!-- Zona de cartas -->
       <section class="contenedor" id="cartas">
         <div id="velo-cartas"></div>
         <button id="startButton" class="boton">Empezar</button>
       </section>
 
+      <!-- Zona de vidas -->
       <section class="contenedor" id="vidas"></section>
     </main>
   </body>

@@ -5,6 +5,7 @@
 // Estilos
 // Casino: no recuerdo de donde saqué las cartas, otro proyecto
 // Geografía: https://github.com/catamphetamine/country-flag-icons/tree/master/flags/3x2
+// Historia
 
 import {Carta} from "./modulos/Carta.js";
 
@@ -13,55 +14,116 @@ import {Estadisticas} from "./modulos/Estadisticas.js";
 import {Cartas} from "./modulos/Cartas.js";
 import {Vidas} from "./modulos/Vidas.js";
 
+import {Estilo} from "./modulos/Estilo.js";
 
-class Estilo {
-  static tema = "casino";
+import {Resultados} from "./modulos/Resultados.js";
 
-  static estilos = {
-    casino: {
-      extensionCartas: ".jpg",
-      extensionReverso: ".jpg",
-      iconoVida: "poker_negro.png",
-      totalCartas: 40,
-    },
-    geografia: {
-      extensionCartas: ".svg",
-      extensionReverso: ".svg",
-      iconoVida: "vida.png",
-      totalCartas: 256,
-    },
-    historia: {},
-  };
+class Parametros {
 
-  static HTMLListElement = document.getElementById("estilo-especifico");
+  static PARAMETROS_FORM = document.getElementById("parametros");
+  static BOTONES_TEMATICA = document.getElementById("tematicas");
+  static DIV_CONTENEDOR = document.getElementById("menu-setup");
 
-  static rutaCartas = "media/" + Estilo.tema + "/cartas/";
-  static extensionCartas = Estilo.estilos[Estilo.tema].extensionCartas;
-  static rutaReversoCarta =
-    "media/" +
-    Estilo.tema +
-    "/reverso" +
-    Estilo.estilos[Estilo.tema].extensionReverso;
+  static escondidos = false;
 
-  static totalCartas = Estilo.estilos[Estilo.tema].totalCartas;
+  static sizeInput = document.getElementById("sizeInput");
+  static lifesInput = document.getElementById("lifesInput");
+  static minInput = document.getElementById("minInput");
+  static secInput = document.getElementById("secInput");
 
-  static rutaIconoVida = "media/" + Estilo.tema + "/vidas/" + Estilo.estilos[Estilo.tema].iconoVida;
+  static casinoButton = document.getElementById("casinoButton");
+  static geografiaButton = document.getElementById("geografiaButton");
+  static historiaButton = document.getElementById("historiaButton");
 
-  static cambiarTematica(nombreTematica) {
-    Estilo.HTMLListElement.href =
-      "estilos/especificos/" + nombreTematica + ".css";
-    Estilo.rutaCartas = "media/" + nombreTematica + "/cartas/";
-    Estilo.extensionCartas = Estilo.estilos[nombreTematica].extensionCartas;
-    Estilo.rutaReversoCarta =
-        "media/" +
-        nombreTematica +
-        "/reverso" +
-        Estilo.estilos[nombreTematica].extensionReverso;
-    
-    Estilo.totalCartas = Estilo.estilos[nombreTematica].totalCartas;
-    
-    Estilo.rutaIconoVida = "media/" + nombreTematica + "/vidas/" + Estilo.estilos[nombreTematica].iconoVida;   
+  static formatear(){
+    Parametros.sizeInput.setAttribute("max", Juego.MAX_PAREJAS);
+    Parametros.sizeInput.setAttribute("min", Juego.MIN_PAREJAS);
+
+    Parametros.lifesInput.setAttribute("max", Juego.MAX_VIDAS);
+    Parametros.lifesInput.setAttribute("min", Juego.MIN_VIDAS);
+
+    Parametros.minInput.setAttribute("max", Juego.MAX_MINUTOS);
+    Parametros.minInput.setAttribute("min", Juego.MIN_MINUTOS);
+
+    Parametros.secInput.setAttribute("max", Juego.MAX_SEGUNDOS);
+    Parametros.secInput.setAttribute("min", Juego.MIN_SEGUNDOS);
   }
+
+  static actualizarValoresPorDefecto(){
+    Parametros.sizeInput.setAttribute("value", Gestor.numParejas);
+    Parametros.lifesInput.setAttribute("value", Gestor.numVidas);
+    Parametros.minInput.setAttribute("value", Gestor.tiempoMin);
+    Parametros.secInput.setAttribute("value", Gestor.tiempoSec);
+  }
+
+  static activarListeners(){
+    // Número de parejas o tamaño
+    Parametros.sizeInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Estilo.estilos[Gestor.tema].totalCartas){
+        Gestor.numParejas = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Número de vidas
+    Parametros.lifesInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_VIDAS && evento.target.value <= Juego.MAX_VIDAS){
+        Gestor.numVidas = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Tiempo: minutos y segundos
+    Parametros.minInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_MINUTOS && evento.target.value <= Juego.MAX_MINUTOS){
+        Gestor.tiempoMin = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    Parametros.secInput.addEventListener("input", (evento) => {
+      if (evento.target.value >= Juego.MIN_SEGUNDOS && evento.target.value <= Juego.MAX_SEGUNDOS){
+        Gestor.tiempoSec = evento.target.value;
+        Gestor.reiniciarJuego();
+      }
+    });
+    // Temática o estilo del juego
+    Parametros.casinoButton.addEventListener("click", () => {
+      Gestor.tema = "casino";
+      Gestor.reiniciarJuego();
+      Parametros.formatear();
+    });
+    Parametros.geografiaButton.addEventListener("click", () => {
+      Gestor.tema = "geografia";
+      Gestor.reiniciarJuego();
+      Parametros.formatear();
+    });
+    Parametros.historiaButton.addEventListener("click", () => {
+      Gestor.tema = "historia";
+      Gestor.reiniciarJuego();
+      Parametros.formatear();
+    });
+    // Submit parámetros
+    Parametros.PARAMETROS_FORM.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      Parametros.esconder();
+      Gestor.iniciarJuego();
+    });
+  }
+
+  static esconder(){
+    if(!Parametros.escondidos){
+      Parametros.DIV_CONTENEDOR.classList.remove("revelado");
+      Parametros.DIV_CONTENEDOR.classList.add("escondido");
+      Parametros.escondidos = true;
+    }
+  }
+
+  static revelar(){
+    if(Parametros.escondidos){
+      Parametros.DIV_CONTENEDOR.classList.remove("escondido");
+      Parametros.DIV_CONTENEDOR.classList.add("revelado");
+      Parametros.escondidos = false;
+    }
+  }
+
 }
 
 class Juego {
@@ -69,6 +131,7 @@ class Juego {
   static PERIODO_ESPERA = 500; // Milisegundos desde que se muestran las 2 cartas seleccionadas hasta que se vuelven a ocultar
   
   static MIN_PAREJAS = 1;
+  static MAX_PAREJAS = 40;
   static MAX_VIDAS = 15;
   static MIN_VIDAS = 1;
   static MIN_MINUTOS = 0;
@@ -78,6 +141,7 @@ class Juego {
 
   // Variables para controlar el estado del juego
   jugando = false;
+  intervaloComprobarFinJuego;
 
   constructor(
     numParejas,
@@ -149,6 +213,7 @@ class Juego {
     let exito = false;
     if (!this.jugando) {
       Countdown.start();
+      this.activarBucleComprobarFinJuego();
       this.activarListeners();
       this.jugando = true;
       exito = true;
@@ -160,6 +225,7 @@ class Juego {
     let exito = false;
     if (this.jugando) {
       Countdown.stop();
+      this.desactivarBucleComprobarFinJuego();
       //this.desactivarListeners() // No es necesario desactivar los listeners de las cartas porque el velo las cubre y evita que se puedan clicar
       this.jugando = false;
       exito = true;
@@ -172,20 +238,24 @@ class Juego {
     Vidas.vaciar();
     Estadisticas.reset();
     Countdown.stop();
+    this.desactivarBucleComprobarFinJuego();
   }
 
-  activarListeners() {
+  activarListeners() {    
     for (let carta of Cartas.lista) {
       carta.HTMLImageElement.addEventListener("click", () => {
         if (Cartas.numCartasVisibles == 0 && carta.mostrar()) {
           Cartas.cartaVisible = carta;
           Cartas.numCartasVisibles ++;
+          Cartas.yaVistas.add(carta);
         } else if (Cartas.numCartasVisibles == 1 && carta.mostrar()) {
           Cartas.numCartasVisibles ++;
           if (carta.esParejaDe(Cartas.cartaVisible)) {
             carta.bloquear();
             Cartas.cartaVisible.bloquear();
-            Estadisticas.numAciertos++;
+            if(Cartas.yaSeHaVistoLaParejaDe(Cartas.cartaVisible)){
+              Estadisticas.numAciertos++;
+            }
             Estadisticas.numMovimientos++;
             Estadisticas.actualizar();
             Cartas.numCartasVisibles -= 2;
@@ -193,138 +263,68 @@ class Juego {
             setTimeout(() => {
               carta.ocultar();
               Cartas.cartaVisible.ocultar();
-              Estadisticas.numFallos++;
+              if(Cartas.yaSeHaVistoLaParejaDe(Cartas.cartaVisible)){
+                Estadisticas.numFallos++;
+              }
               Vidas.eliminarVida();
               Estadisticas.numMovimientos++;
               Estadisticas.actualizar();
               Cartas.numCartasVisibles -= 2;
+              Cartas.yaVistas.add(carta);
             }, Juego.PERIODO_ESPERA);
           }
         }
-        if (this.haPerdido()) console.log("Game over");
       });
     }
   }
 
-  //https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
-  static desactivarListeners() {}
+  activarBucleComprobarFinJuego(){
+    this.intervaloComprobarFinJuego = setInterval(() => {
+      if(this.haPerdido()){
+        Resultados.guardarEnLocalStorage(
+          "derrota",
+          Estadisticas.numAciertos,
+          Estadisticas.numFallos,
+          Estadisticas.numMovimientos,
+          Countdown.tiempoTranscurrido(),
+          "estilos/especificos/" + Estilo.tema + ".css"
+        );
+        this.redirectToResultPage();
+      } 
+      if(this.haGanado()){
+        Resultados.guardarEnLocalStorage(
+          "victoria",
+          Estadisticas.numAciertos,
+          Estadisticas.numFallos,
+          Estadisticas.numMovimientos,
+          Countdown.tiempoTranscurrido(),
+          "estilos/especificos/" + Estilo.tema + ".css"        
+        )
+        this.redirectToResultPage();
+      }
+    }, 500);
+  }
+
+  desactivarBucleComprobarFinJuego(){
+    clearInterval(this.intervaloComprobarFinJuego);
+  }
 
   haPerdido() {
     return Vidas.estaVacio() || Countdown.isOver();
   }
 
   haGanado() {
-    return false;
+    return Cartas.estanTodasResueltas();
   }
 
-  redirectToResultPage() {}
+  // https://stackoverflow.com/questions/2018567/loading-another-html-page-from-javascript
+  redirectToResultPage() {
+    window.location.href = "./resultados.html";
+  }
 }
-
-class Parametros {
-
-  static PARAMETROS_FORM = document.getElementById("parametros");
-  static BOTONES_TEMATICA = document.getElementById("tematicas");
-  static DIV_CONTENEDOR = document.getElementById("menu-setup");
-
-  static escondidos = true;
-
-  static sizeInput = document.getElementById("sizeInput");
-  static lifesInput = document.getElementById("lifesInput");
-  static minInput = document.getElementById("minInput");
-  static secInput = document.getElementById("secInput");
-
-  static casinoButton = document.getElementById("casinoButton");
-  static geografiaButton = document.getElementById("geografiaButton");
-  static historiaButton = document.getElementById("historiaButton");
-
-  static formatear(){
-    Parametros.sizeInput.setAttribute("max", Estilo.estilos[Gestor.tema].totalCartas);
-    Parametros.sizeInput.setAttribute("min", Juego.MIN_PAREJAS);
-
-    Parametros.lifesInput.setAttribute("max", Juego.MAX_VIDAS);
-    Parametros.lifesInput.setAttribute("min", Juego.MIN_VIDAS);
-
-    Parametros.minInput.setAttribute("max", Juego.MAX_MINUTOS);
-    Parametros.minInput.setAttribute("min", Juego.MIN_MINUTOS);
-
-    Parametros.secInput.setAttribute("max", Juego.MAX_SEGUNDOS);
-    Parametros.secInput.setAttribute("min", Juego.MIN_SEGUNDOS);
-  }
-
-  static actualizarValoresPorDefecto(){
-    Parametros.sizeInput.setAttribute("value", Gestor.numParejas);
-    Parametros.lifesInput.setAttribute("value", Gestor.numVidas);
-    Parametros.minInput.setAttribute("value", Gestor.tiempoMin);
-    Parametros.secInput.setAttribute("value", Gestor.tiempoSec);
-  }
-
-  static activarListeners(){
-    // Número de parejas o tamaño
-    Parametros.sizeInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Estilo.estilos[Gestor.tema].totalCartas){
-        Gestor.numParejas = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Número de vidas
-    Parametros.lifesInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_VIDAS && evento.target.value <= Juego.MAX_VIDAS){
-        Gestor.numVidas = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Tiempo: minutos y segundos
-    Parametros.minInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_MINUTOS && evento.target.value <= Juego.MAX_MINUTOS){
-        Gestor.tiempoMin = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    Parametros.secInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_SEGUNDOS && evento.target.value <= Juego.MAX_SEGUNDOS){
-        Gestor.tiempoSec = evento.target.value;
-        Gestor.reiniciarJuego();
-      }
-    });
-    // Temática o estilo del juego
-    Parametros.casinoButton.addEventListener("click", () => {
-      Gestor.tema = "casino";
-      Parametros.formatear();
-      Gestor.reiniciarJuego();
-    });
-    Parametros.geografiaButton.addEventListener("click", () => {
-      Gestor.tema = "geografia";
-      Parametros.formatear();
-      Gestor.reiniciarJuego();
-    });
-    // Submit parámetros
-    Parametros.PARAMETROS_FORM.addEventListener("submit", (evento) => {
-      evento.preventDefault();
-      Parametros.esconder();
-      Gestor.iniciarJuego();
-    });
-  }
-
-  static esconder(){
-    if(!Parametros.escondidos){
-      Parametros.DIV_CONTENEDOR.classList.remove("revelado");
-      Parametros.DIV_CONTENEDOR.classList.add("escondido");
-      Parametros.escondidos = true;
-    }
-  }
-
-  static revelar(){
-    if(Parametros.escondidos){
-      Parametros.DIV_CONTENEDOR.classList.remove("escondido");
-      Parametros.DIV_CONTENEDOR.classList.add("revelado");
-      Parametros.escondidos = false;
-    }
-  }
-
-}
-
 
 class Gestor {
+  
   // Configuración por defecto de los parámetros que puede establecer el usuario
   static numParejas = 5;
   static numVidas = 4;
@@ -339,7 +339,9 @@ class Gestor {
     Gestor.tema
   );
 
-  // Botones para controlar el estado de la partida
+  // Botones para controlar el tamaño de las cartas así como el estado de la partida
+  static augmentSizeButton = document.getElementById("augmentSizeButton");
+  static reduceSizeButton = document.getElementById("reduceSizeButton");
   static startButton = document.getElementById("startButton");
   static configureButton = document.getElementById("configureButton");
   static pauseButton = document.getElementById("pauseButton");
@@ -347,6 +349,12 @@ class Gestor {
 
   static activarListeners() {
 
+    Gestor.augmentSizeButton.addEventListener("click", () => {
+      Cartas.aumentarDimensiones();
+    });
+    Gestor.reduceSizeButton.addEventListener("click", () => {
+      Cartas.disminuirDimensiones();
+    });
     Gestor.configureButton.addEventListener("click", () => {
       Parametros.revelar();
       Gestor.pausarJuego();

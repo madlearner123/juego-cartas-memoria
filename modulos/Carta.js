@@ -58,10 +58,15 @@ export class Carta {
     }
   
     esParejaDe(carta) {
-      return this.idPareja == carta.idPareja;
+      return this.idPareja == carta.idPareja && this.idCarta != carta.idCarta;
     }
   
-    cambiarAncho(px) {
-      this.HTMLImageElement.style.width = px + "px";
+    reDimensionar(porcentaje){
+      let widthCarta = (1 + porcentaje) * this.HTMLImageElement.width;
+      let heightCarta = (1 + porcentaje) * this.HTMLImageElement.height;
+      if (widthCarta > 50 && widthCarta < 500){
+        this.HTMLImageElement.style.width = widthCarta + "px";
+        this.HTMLImageElement.style.height = heightCarta + "px";
+      }
     }
   }

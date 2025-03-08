@@ -5,6 +5,8 @@ export class Cartas {
     static cartaVisible;  // Referencia a la Carta mostrada
     static lista = [];    // Lista de objetos Carta
   
+    static yaVistas = new Set(); // Cartas ya vistas en el transcurso del juego
+
     static DIV_VELO = document.getElementById("velo-cartas");
     static DIV_CONTENEDOR = document.getElementById("cartas");
   
@@ -38,6 +40,28 @@ export class Cartas {
   
     static barajarLista() {
       Cartas.lista.sort((a, b) => Math.random() * 2 - 1); // Ordenar aleatoriamente, o sea, barajar. Créditos al profe de programación.
+    }
+
+    static estanTodasResueltas(){
+      for(let carta of Cartas.lista){
+        if(!carta.bloqueada) return false;
+      }
+      return true;
+    }
+
+    static yaSeHaVistoLaParejaDe(carta){
+      for(let otraCarta of Cartas.yaVistas){
+        if(carta.esParejaDe(otraCarta)) return true;
+      }
+      return false;
+    }
+
+    static aumentarDimensiones(){
+      for(let carta of Cartas.lista) carta.reDimensionar(0.05);
+    }
+
+    static disminuirDimensiones(){
+      for(let carta of Cartas.lista) carta.reDimensionar(-0.05);
     }
   
     static reset() {
