@@ -31,7 +31,6 @@ img.carta {
 
 /* Vidas */
 .contenedor#vidas {
-    /*background: linear-gradient(peachpuff , firebrick);*/
     background-color: #b22234;
     border: 2px solid goldenrod;
 }

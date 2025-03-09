@@ -1,4 +1,3 @@
-// https://stackoverflow.com/questions/42743511/reading-writing-to-a-file-in-javascript
 export class Resultados {
   static IMG_RESULTADO = document.querySelector("img.resultado");
   static P_RESULTADO = document.querySelector("p.resultado");
@@ -16,6 +15,7 @@ export class Resultados {
   static KEY_TIEMPO = "tiempo";
   static KEY_ESTILO = "estilo-especifico";
 
+  // https://stackoverflow.com/questions/42743511/reading-writing-to-a-file-in-javascript
   static guardarEnLocalStorage(
     resultado,
     aciertos,

@@ -1,14 +1,12 @@
-export class Cartas {
-    static cuenta = 0;
-    static numCartasVisibles = 0;
-  
-    static cartaVisible;  // Referencia a la Carta mostrada
-    static lista = [];    // Lista de objetos Carta
-  
-    static yaVistas = new Set(); // Cartas ya vistas en el transcurso del juego
+export class Cartas {    
+  static cuenta = 0;            // Número de cartas dentro del div/section
+  static DIV_VELO = document.getElementById("velo-cartas");
+  static DIV_CONTENEDOR = document.getElementById("cartas");
 
-    static DIV_VELO = document.getElementById("velo-cartas");
-    static DIV_CONTENEDOR = document.getElementById("cartas");
+  static numCartasVisibles = 0; // Número de cartas en estado Mostrado
+  static cartaVisible;          // Referencia a la Carta mostrada
+  static lista = [];            // Lista de objetos Carta
+  static yaVistas = new Set();  // Cartas ya vistas en el transcurso del juego
   
     static agregarCartaAlDiv(carta) {
       Cartas.DIV_CONTENEDOR.append(carta.HTMLImageElement);
@@ -68,5 +66,6 @@ export class Cartas {
       while (!Cartas.divEstaVacio()) Cartas.eliminarCartaDelDiv();
       Cartas.numCartasVisibles = 0;
       Cartas.lista = [];
+      Cartas.yaVistas = new Set();
     }
   }

@@ -14,7 +14,8 @@ import {Estadisticas} from "./modulos/Estadisticas.js";
 import {Cartas} from "./modulos/Cartas.js";
 import {Vidas} from "./modulos/Vidas.js";
 
-import {Estilo} from "./modulos/Estilo.js";
+import {Estilos} from "./modulos/Estilos.js";
+import {Sonidos} from "./modulos/Sonidos.js";
 
 import {Resultados} from "./modulos/Resultados.js";
 
@@ -35,7 +36,7 @@ class Parametros {
   static geografiaButton = document.getElementById("geografiaButton");
   static historiaButton = document.getElementById("historiaButton");
 
-  static formatear(){
+  static formatearValoresMaximosYMinimos(){
     Parametros.sizeInput.setAttribute("max", Juego.MAX_PAREJAS);
     Parametros.sizeInput.setAttribute("min", Juego.MIN_PAREJAS);
 
@@ -59,7 +60,7 @@ class Parametros {
   static activarListeners(){
     // Número de parejas o tamaño
     Parametros.sizeInput.addEventListener("input", (evento) => {
-      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Estilo.estilos[Gestor.tema].totalCartas){
+      if (evento.target.value >= Juego.MIN_PAREJAS && evento.target.value <= Juego.MAX_PAREJAS){
         Gestor.numParejas = evento.target.value;
         Gestor.reiniciarJuego();
       }
@@ -88,17 +89,14 @@ class Parametros {
     Parametros.casinoButton.addEventListener("click", () => {
       Gestor.tema = "casino";
       Gestor.reiniciarJuego();
-      Parametros.formatear();
     });
     Parametros.geografiaButton.addEventListener("click", () => {
       Gestor.tema = "geografia";
       Gestor.reiniciarJuego();
-      Parametros.formatear();
     });
     Parametros.historiaButton.addEventListener("click", () => {
       Gestor.tema = "historia";
       Gestor.reiniciarJuego();
-      Parametros.formatear();
     });
     // Submit parámetros
     Parametros.PARAMETROS_FORM.addEventListener("submit", (evento) => {
@@ -150,41 +148,36 @@ class Juego {
     limiteTiempoSeg,
     estilo
   ) {
-    //this.estilo = estilo;
     this.setTema(estilo);
-    //this.numParejas = numParejas;
     this.setParejas(numParejas);
-    //this.numVidasInicial = numVidasInicial;
     this.setVidas(numVidasInicial);
-    //this.limiteTiempoMin = limiteTiempoMin;
-    //this.limiteTiempoSeg = limiteTiempoSeg;
     this.setCountdown(limiteTiempoMin, limiteTiempoSeg);
   }
 
   setTema(tema) {
-    Estilo.cambiarTematica(tema);
+    Estilos.cambiarTematica(tema);
   }
 
   setParejas(numParejas) {
-    if (!Cartas.divEstaVacio()) Cartas.reset();
+    if (!Cartas.divEstaVacio()) Cartas.reset(); // Por si acaso
 
     // Genera ids de pareja aleatorios sin repetidos entre 0 y el número máximo de cartas para el estilo seleccionado
     let idsPareja = new Set();
     while (idsPareja.size != numParejas)
-      idsPareja.add(Math.round(Math.random() * (Estilo.totalCartas - 1)));
+      idsPareja.add(Math.round(Math.random() * (Estilos.totalCartas - 1)));
 
     let idCarta = 0;
     for (let idPareja of idsPareja) {
       let carta1 = new Carta(
-        Estilo.rutaCartas + idPareja + Estilo.extensionCartas,
-        Estilo.rutaReversoCarta,
+        Estilos.rutaCartas + idPareja + Estilos.extensionCartas,
+        Estilos.rutaReversoCarta,
         idCarta,
         idPareja
       );
       idCarta++;
       let carta2 = new Carta(
-        Estilo.rutaCartas + idPareja + Estilo.extensionCartas,
-        Estilo.rutaReversoCarta,
+        Estilos.rutaCartas + idPareja + Estilos.extensionCartas,
+        Estilos.rutaReversoCarta,
         idCarta,
         idPareja
       );
@@ -197,14 +190,14 @@ class Juego {
   }
 
   setVidas(numVidasInicial) {
-    if (!Vidas.estaVacio()) Vidas.vaciar();
+    if (!Vidas.estaVacio()) Vidas.vaciar(); // Por si acaso también
     for (let i = 0; i < numVidasInicial; i++) {
-      Vidas.agregarVida(Estilo.rutaIconoVida);
+      Vidas.agregarVida(Estilos.rutaIconoVida);
     }
   }
 
   setCountdown(limiteTiempoMin, limiteTiempoSeg) {
-    if (!Countdown.isOver()) Countdown.stop();
+    if (!Countdown.isOver()) Countdown.stop(); // También por si acaso
     Countdown.set(limiteTiempoMin, limiteTiempoSeg);
     Countdown.update();
   }
@@ -226,7 +219,6 @@ class Juego {
     if (this.jugando) {
       Countdown.stop();
       this.desactivarBucleComprobarFinJuego();
-      //this.desactivarListeners() // No es necesario desactivar los listeners de las cartas porque el velo las cubre y evita que se puedan clicar
       this.jugando = false;
       exito = true;
     }
@@ -256,6 +248,7 @@ class Juego {
             if(Cartas.yaSeHaVistoLaParejaDe(Cartas.cartaVisible)){
               Estadisticas.numAciertos++;
             }
+            Sonidos.reproducirAcierto();
             Estadisticas.numMovimientos++;
             Estadisticas.actualizar();
             Cartas.numCartasVisibles -= 2;
@@ -265,8 +258,10 @@ class Juego {
               Cartas.cartaVisible.ocultar();
               if(Cartas.yaSeHaVistoLaParejaDe(Cartas.cartaVisible)){
                 Estadisticas.numFallos++;
+                Vidas.eliminarVida();
               }
-              Vidas.eliminarVida();
+              Sonidos.reproducirFallo();
+              //Vidas.eliminarVida();
               Estadisticas.numMovimientos++;
               Estadisticas.actualizar();
               Cartas.numCartasVisibles -= 2;
@@ -287,7 +282,7 @@ class Juego {
           Estadisticas.numFallos,
           Estadisticas.numMovimientos,
           Countdown.tiempoTranscurrido(),
-          "estilos/especificos/" + Estilo.tema + ".css"
+          "estilos/especificos/" + Estilos.tema + ".css"
         );
         this.redirectToResultPage();
       } 
@@ -298,7 +293,7 @@ class Juego {
           Estadisticas.numFallos,
           Estadisticas.numMovimientos,
           Countdown.tiempoTranscurrido(),
-          "estilos/especificos/" + Estilo.tema + ".css"        
+          "estilos/especificos/" + Estilos.tema + ".css"        
         )
         this.redirectToResultPage();
       }
@@ -372,6 +367,7 @@ class Gestor {
         Gestor.reiniciarJuego();
       }, Juego.PERIODO_ESPERA);
     });
+    Sonidos.activarBoton();
 
   }
 
@@ -413,7 +409,7 @@ class Gestor {
   }
 }
 
-Parametros.formatear();
+Parametros.formatearValoresMaximosYMinimos();
 Parametros.actualizarValoresPorDefecto();
 Parametros.activarListeners();
 Gestor.activarListeners();
